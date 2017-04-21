@@ -14,16 +14,18 @@
   
   
   
-    <meta name="description" content="意义 单例模式是一种常见的设计模式
- 其目的是确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。
-为什么要使用单例模式 使用单例模式可以避免大量的new操作
- 因为每一次new操作都会消耗系统和内存的资源。
-如何实现   1.私有化构造方法
-   2.公开的静态方法
-   3.私有的静态属性
-   4.防止克隆
-   5.防止继承
-代码演示1234567891011121314...">
+    <meta name="description" content="意义&#8195;&#8195;单例模式是一种常见的设计模式
+&#8195;&#8195;其目的是确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。
+为什么要使用单例模式&#8195;&#8195;使用单例模式可以避免大量的new操作
+&#8195;&#8195;因为每一次new操作都会消耗系统和内存的资源。
+如何实现
+私有化构造方法
+
+公开的静态方法
+
+私有的静态属性
+
+防止...">
   
   <title>单例模式 [ When ]</title>
   
@@ -45,7 +47,7 @@
 <div class="side-navigate hide-area">
   
     <div class="item prev">
-      <a href="/2016/04/18/hello-world/">
+      <a href="/2016/03/18/hello-world/">
         <div class="item-icon"></div>
       </a>
       <div class="item-title">
@@ -127,7 +129,7 @@
   <article id="post">
     <h1>单例模式</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">Created at 2016-04-21</span>
+      <span id = "post-title-date">Created at 2016-03-20</span>
       
         <span id = "post-title-updated">Updated at 2017-04-21</span>
       
@@ -135,16 +137,23 @@
       
     </p>
     
-    <h3 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h3><p> 单例模式是一种常见的设计模式</p>
-<p> 其目的是确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。</p>
-<h3 id="为什么要使用单例模式"><a href="#为什么要使用单例模式" class="headerlink" title="为什么要使用单例模式"></a>为什么要使用单例模式</h3><p> 使用单例模式可以避免大量的new操作</p>
-<p> 因为每一次new操作都会消耗系统和内存的资源。</p>
-<h3 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h3><p>   1.私有化构造方法</p>
-<p>   2.公开的静态方法</p>
-<p>   3.私有的静态属性</p>
-<p>   4.防止克隆</p>
-<p>   5.防止继承</p>
-<h3 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;?php</div><div class="line">/**</div><div class="line"> * 单例模式：</div><div class="line"> * 目标-得到同一个对象</div><div class="line"> *</div><div class="line"> */</div><div class="line">//防止继承</div><div class="line">final class MySql</div><div class="line">&#123;</div><div class="line">    //私有的静态属性</div><div class="line">    private static <span class="variable">$instance</span>; </div><div class="line"></div><div class="line">    //私有化构造方法</div><div class="line">    private <span class="keyword">function</span> <span class="function"><span class="title">__construct</span></span>()  </div><div class="line">    &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    //公开的静态方法</div><div class="line">    static public <span class="keyword">function</span> <span class="function"><span class="title">getInstance</span></span>()</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span>(self::<span class="variable">$instance</span> instanceof self)</div><div class="line">        &#123;</div><div class="line">            <span class="built_in">return</span> self::<span class="variable">$instance</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span></div><div class="line">        &#123;</div><div class="line">            <span class="built_in">return</span> self::<span class="variable">$instance</span> = new self();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    //防止克隆</div><div class="line">    private <span class="keyword">function</span> <span class="function"><span class="title">__clone</span></span>()</div><div class="line">    &#123;</div><div class="line">        // TODO: Implement __clone() method.</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//测试是否得到同一对象</div><div class="line"><span class="variable">$db1</span> = new MySql();</div><div class="line"><span class="variable">$db2</span> = new MySql();//此时运行结果是报错，Call to private MySql::__construct()</div><div class="line"></div><div class="line"><span class="variable">$db1</span> = MySql::getInstance();</div><div class="line"><span class="variable">$db2</span> = MySql::getInstance();//此时运行的结果是OK</div><div class="line"></div><div class="line"><span class="variable">$db2</span> = <span class="built_in">clone</span> <span class="variable">$db1</span>;//此时运行结果是报错，Call to private MySql::__clone()</div><div class="line"></div><div class="line"><span class="keyword">if</span>(<span class="variable">$db1</span>===<span class="variable">$db2</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">'OK'</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">'NO'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+    <h3 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h3><p>&#8195;&#8195;单例模式是一种常见的设计模式</p>
+<p>&#8195;&#8195;其目的是确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。</p>
+<h3 id="为什么要使用单例模式"><a href="#为什么要使用单例模式" class="headerlink" title="为什么要使用单例模式"></a>为什么要使用单例模式</h3><p>&#8195;&#8195;使用单例模式可以避免大量的new操作</p>
+<p>&#8195;&#8195;因为每一次new操作都会消耗系统和内存的资源。</p>
+<h3 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h3><ol>
+<li><p>私有化构造方法</p>
+</li>
+<li><p>公开的静态方法</p>
+</li>
+<li><p>私有的静态属性</p>
+</li>
+<li><p>防止克隆</p>
+</li>
+<li><p>防止继承</p>
+</li>
+</ol>
+<h3 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">/**</div><div class="line"> * 单例模式：</div><div class="line"> * 目标-得到同一个对象</div><div class="line"> *</div><div class="line"> */</div><div class="line">//防止继承</div><div class="line">final class MySql</div><div class="line">&#123;</div><div class="line">    //私有的静态属性</div><div class="line">    private static <span class="variable">$instance</span>; </div><div class="line"></div><div class="line">    //私有化构造方法</div><div class="line">    private <span class="keyword">function</span> <span class="function"><span class="title">__construct</span></span>()  </div><div class="line">    &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    //公开的静态方法</div><div class="line">    static public <span class="keyword">function</span> <span class="function"><span class="title">getInstance</span></span>()</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span>(self::<span class="variable">$instance</span> instanceof self)</div><div class="line">        &#123;</div><div class="line">            <span class="built_in">return</span> self::<span class="variable">$instance</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span></div><div class="line">        &#123;</div><div class="line">            <span class="built_in">return</span> self::<span class="variable">$instance</span> = new self();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    //防止克隆</div><div class="line">    private <span class="keyword">function</span> <span class="function"><span class="title">__clone</span></span>()</div><div class="line">    &#123;</div><div class="line">        // TODO: Implement __clone() method.</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//测试是否得到同一对象</div><div class="line"><span class="variable">$db1</span> = new MySql();</div><div class="line"><span class="variable">$db2</span> = new MySql();//此时运行结果是报错，Call to private MySql::__construct()</div><div class="line"></div><div class="line"><span class="variable">$db1</span> = MySql::getInstance();</div><div class="line"><span class="variable">$db2</span> = MySql::getInstance();//此时运行的结果是OK</div><div class="line"></div><div class="line"><span class="variable">$db2</span> = <span class="built_in">clone</span> <span class="variable">$db1</span>;//此时运行结果是报错，Call to private MySql::__clone()</div><div class="line"></div><div class="line"><span class="keyword">if</span>(<span class="variable">$db1</span>===<span class="variable">$db2</span>)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">'OK'</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">else</span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">'NO'</span>;</div><div class="line">&#125;</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
 <li><p>改进系统的设计</p>
 </li>
@@ -173,7 +182,7 @@
   
 <nav id="pagination">
   
-    <a href="/2016/04/18/hello-world/" class="prev">&larr; Prev post Hello-world</a>
+    <a href="/2016/03/18/hello-world/" class="prev">&larr; Prev post Hello-world</a>
   
 
   
