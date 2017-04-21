@@ -1,0 +1,351 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  
+  
+    <meta name="description" content="意义单例模式是一种常见的设计模式
+其目的是确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。
+为什么要使用单例模式使用单例模式可以避免大量的new操作，
+因为每一次new操作都会消耗系统和内存的资源。
+如何实现1.私有化构造方法
+2.公开的静态方法
+3.私有的静态属性
+4.防止克隆
+5.防止继承
+代码演示1234567891011121314151617181920212223...">
+  
+  <title>单例模式 [ When ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+  
+    <div class="item next">
+      <a href="/2017/04/06/hello-world/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        Hello World
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="http://om34v8mq1.bkt.clouddn.com/head.png"/>
+          <div id="homelink">When</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/about">About</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="https://github.com/stiekel/hexo-theme-random">Github</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>单例模式</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">撰写于 2016-04-21</span>
+      
+        <span id = "post-title-updated">修改于 2017-04-21</span>
+      
+      
+      
+    </p>
+    
+    <h3 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h3><pre><code>单例模式是一种常见的设计模式
+其目的是确保某个类只有一个实例，而且自行实例化并向整个系统提供这个实例。
+</code></pre><h3 id="为什么要使用单例模式"><a href="#为什么要使用单例模式" class="headerlink" title="为什么要使用单例模式"></a>为什么要使用单例模式</h3><pre><code>使用单例模式可以避免大量的new操作，
+因为每一次new操作都会消耗系统和内存的资源。
+</code></pre><h3 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h3><pre><code>1.私有化构造方法
+2.公开的静态方法
+3.私有的静态属性
+4.防止克隆
+5.防止继承
+</code></pre><h3 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">/**</div><div class="line"> * 单例模式：</div><div class="line"> * 目标-得到同一个对象</div><div class="line"> *</div><div class="line"> */</div><div class="line"></div><div class="line">//防止继承</div><div class="line">final class MySql</div><div class="line">&#123;</div><div class="line">    //私有的静态属性</div><div class="line">    private static $instance; </div><div class="line"></div><div class="line">    //私有化构造方法</div><div class="line">    private function __construct()  </div><div class="line">    &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //公开的静态方法</div><div class="line">    static public function getInstance()</div><div class="line">    &#123;</div><div class="line">        if(self::$instance instanceof self)</div><div class="line">        &#123;</div><div class="line">            return self::$instance;</div><div class="line">        &#125;</div><div class="line">        else</div><div class="line">        &#123;</div><div class="line">            return self::$instance = new self();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    //防止克隆</div><div class="line">    private function __clone()</div><div class="line">    &#123;</div><div class="line">        // TODO: Implement __clone() method.</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//测试是否得到同一对象</div><div class="line">$db1 = new MySql();</div><div class="line">$db2 = new MySql();//此时运行结果是报错，Call to private MySql::__construct()</div><div class="line"></div><div class="line">$db1 = MySql::getInstance();</div><div class="line">$db2 = MySql::getInstance();//此时运行的结果是OK</div><div class="line"></div><div class="line">$db2 = clone $db1;//此时运行结果是报错，Call to private MySql::__clone()</div><div class="line"></div><div class="line">if($db1===$db2)</div><div class="line">&#123;</div><div class="line">    echo &apos;OK&apos;;</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">    echo &apos;NO&apos;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><pre><code>1. 改进系统的设计
+2. 是对全局变量的一种改进
+</code></pre><h3 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h3><pre><code>1. 难于调试
+2. 隐藏的依赖关系
+3. 无法用错误类型的数据覆写一个单例
+</code></pre>
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <div class="random-toc">
+    <h2>目录</h2>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#意义"><span class="toc-text">意义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么要使用单例模式"><span class="toc-text">为什么要使用单例模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何实现"><span class="toc-text">如何实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码演示"><span class="toc-text">代码演示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优点："><span class="toc-text">优点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点："><span class="toc-text">缺点：</span></a></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+
+  
+
+  
+    <a href="/2017/04/06/hello-world/" class="next">下一篇 Hello World &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by  using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="http://om34v8mq1.bkt.clouddn.com/head.png">
+    <p id="description"></p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/stiekel/hexo-theme-random">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://coding.net/u/Stiekel">
+        
+          <i class="icon iconfont coding">&#xe607;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://twitter.com/SidCN">
+        
+          <i class="icon iconfont twitter">&#xe600;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://weibo.com/u/3277953551">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+  turnoffBackgroundImage = true;
+
+
+var backgroundColor = "34495E";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+
