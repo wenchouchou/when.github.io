@@ -14,17 +14,12 @@
   
   
   
-    <meta name="description" content="mysql优化之读写分离
-读写分离概述：
-
-读写分离，基本的原理是让主数据库处理事务性增、改、删操作（INSERT、UPDATE、DELETE），而从数据库处理SELECT查询操作。数据库复制被用来把事务性操作导致的变更同步到集群中的从数据库。
-
-为什么要读写分离呢？
-
-因为数据库的“写”（写10000条数据到mysql可能要3分钟）操作是比较耗时的。
-但是数据库的“读”（从mysql读10...">
+    <meta name="description" content="读写分离概述：读写分离，基本的原理是让主数据库处理事务性增、改、删操作（INSERT、UPDATE、DELETE），而从数据库处理SELECT查询操作。数据库复制被用来把事务性操作导致的变更同步到集群中的从数据库。
+为什么要读写分离呢？因为数据库的“写”（写10000条数据到mysql可能要3分钟）操作是比较耗时的。
+但是数据库的“读”（从mysql读10000条数据可能只要5秒钟）。
+所以...">
   
-  <title>rwsepsrste [ when ]</title>
+  <title>框架中读写分离的实现 [ when ]</title>
   
   
     <link rel="shortcut icon" href="/when.ico">
@@ -110,7 +105,7 @@
       
       
   <article id="post">
-    <h1>rwsepsrste</h1>
+    <h1>框架中读写分离的实现</h1>
     <p class="page-title-sub">
       <span id = "post-title-date">Created at 2017-04-20</span>
       
@@ -120,39 +115,24 @@
       
     </p>
     
-    <h1 id="mysql优化之读写分离"><a href="#mysql优化之读写分离" class="headerlink" title="mysql优化之读写分离"></a>mysql优化之读写分离</h1><blockquote>
-<p>读写分离概述：</p>
-</blockquote>
-<p>读写分离，基本的原理是让主数据库处理事务性增、改、删操作（INSERT、UPDATE、DELETE），而从数据库处理SELECT查询操作。数据库复制被用来把事务性操作导致的变更同步到集群中的从数据库。</p>
-<blockquote>
-<p>为什么要读写分离呢？</p>
-</blockquote>
-<p>因为数据库的“写”（写10000条数据到mysql可能要3分钟）操作是比较耗时的。</p>
+    <h2 id="读写分离概述："><a href="#读写分离概述：" class="headerlink" title="读写分离概述："></a>读写分离概述：</h2><p>读写分离，基本的原理是让主数据库处理事务性增、改、删操作（INSERT、UPDATE、DELETE），而从数据库处理SELECT查询操作。数据库复制被用来把事务性操作导致的变更同步到集群中的从数据库。</p>
+<h2 id="为什么要读写分离呢？"><a href="#为什么要读写分离呢？" class="headerlink" title="为什么要读写分离呢？"></a>为什么要读写分离呢？</h2><p>因为数据库的“写”（写10000条数据到mysql可能要3分钟）操作是比较耗时的。</p>
 <p>但是数据库的“读”（从mysql读10000条数据可能只要5秒钟）。</p>
 <p>所以我们可以采用读写分离，来提高数据库查询的效率。</p>
-<blockquote>
-<p>读写分离，为什么能提升性能呢？</p>
-</blockquote>
-<p>举例：<br>如果不分开，所有操作都在一个数据库中（比如mysql）中进行，如果并发用户有1000个。即mysql数据库，得为1000个用户提供查询、写入等数据库服务。</p>
-<p>读写分离之后，msyql-master，msyql-slave。就相当于将1000个并发用户，分流了，一部分用户（如800人）对mysql-slave数据库进行读操作，另一部分用户（如200人）对mysql-master数据库进行操作。</p>
-<h2 id="即以前1000个用户的事情，由一个东西来干；读写分离后，1000个用户的事情，由两个东西来干。"><a href="#即以前1000个用户的事情，由一个东西来干；读写分离后，1000个用户的事情，由两个东西来干。" class="headerlink" title="即以前1000个用户的事情，由一个东西来干；读写分离后，1000个用户的事情，由两个东西来干。"></a>即以前1000个用户的事情，由一个东西来干；读写分离后，1000个用户的事情，由两个东西来干。</h2><blockquote>
-<p>读写分离的两种实现思路:</p>
-</blockquote>
-<ol>
+<h2 id="读写分离，为什么能提升性能呢？"><a href="#读写分离，为什么能提升性能呢？" class="headerlink" title="读写分离，为什么能提升性能呢？"></a>读写分离，为什么能提升性能呢？</h2><p>举例：<br>如果不分开，所有操作都在一个数据库中（比如mysql）中进行，如果并发用户有1000个。即mysql数据库，得为1000个用户提供查询、写入等数据库服务。</p>
+<p>读写分离之后，msyql-master，msyql-slave。就相当于将1000个并发用户，分流了，一部分用户（如800人）对mysql-slave数据库进行读操作，另一部分用户（如200人）对mysql-master数据库进行操作。<br>即以前1000个用户的事情，由一个东西来干；读写分离后，1000个用户的事情，由两个东西来干。</p>
+<h2 id="读写分离的两种实现思路"><a href="#读写分离的两种实现思路" class="headerlink" title="读写分离的两种实现思路:"></a>读写分离的两种实现思路:</h2><ol>
 <li>在代码中实现(框架中实现读写分离);–本次主讲</li>
 <li>利用数据库代理(中间件 例如:官方的mysql-proxy) –暂时未完成</li>
 </ol>
-<h2 id="一-TP框架实现mysql读写分离"><a href="#一-TP框架实现mysql读写分离" class="headerlink" title="一. TP框架实现mysql读写分离"></a>一. TP框架实现mysql读写分离</h2><hr>
-<blockquote>
-<p>==ThinkPHP内置了分布式数据库的支持，包括主从式数据库的读写分离，但是分布式数据库必须是相同的数据库类型。==</p>
-</blockquote>
-<p>分布式数据库配置定义:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&apos;DB_DEPLOY_TYPE&apos;=&gt; 1,  //设置分布式数据库支持</div><div class="line">&apos;DB_TYPE&apos;       =&gt; &apos;mysql&apos;,//分布式数据库类型必须相同</div><div class="line">&apos;DB_HOST&apos;       =&gt; &apos;192.168.2.181,192.168.2.182&apos;,</div><div class="line">&apos;DB_NAME&apos;       =&gt; &apos;test&apos;,//如果相同可以不用定义多个</div><div class="line">&apos;DB_USER&apos;       =&gt; &apos;itczp&apos;,</div><div class="line">&apos;DB_PWD&apos;        =&gt; &apos;itczp&apos;,</div><div class="line">&apos;DB_PORT&apos;       =&gt; &apos;3306&apos;,</div><div class="line">&apos;DB_PREFIX&apos;     =&gt; &apos;&apos;,</div></pre></td></tr></table></figure></p>
-<p>分布式数据库的读写是否分离，默认的情况下读写不分离，也就是每台服务器都可以进行读写操作，<br>对于主从式数据库而言，需要设置读写分离，通过下面的设置就可以：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&apos;DB_RW_SEPARATE&apos;=&gt;true, //开启读写分离</div></pre></td></tr></table></figure></p>
+<h2 id="一-TP框架实现mysql读写分离"><a href="#一-TP框架实现mysql读写分离" class="headerlink" title="一. TP框架实现mysql读写分离"></a>一. TP框架实现mysql读写分离</h2><p>ThinkPHP内置了分布式数据库的支持，包括主从式数据库的读写分离，但是分布式数据库必须是相同的数据库类型。</p>
+<p>分布式数据库配置定义:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">'DB_DEPLOY_TYPE'</span>=&gt; 1,  //设置分布式数据库支持</div><div class="line"><span class="string">'DB_TYPE'</span>       =&gt; <span class="string">'mysql'</span>,//分布式数据库类型必须相同</div><div class="line"><span class="string">'DB_HOST'</span>       =&gt; <span class="string">'192.168.2.181,192.168.2.182'</span>,</div><div class="line"><span class="string">'DB_NAME'</span>       =&gt; <span class="string">'test'</span>,//如果相同可以不用定义多个</div><div class="line"><span class="string">'DB_USER'</span>       =&gt; <span class="string">'itczp'</span>,</div><div class="line"><span class="string">'DB_PWD'</span>        =&gt; <span class="string">'itczp'</span>,</div><div class="line"><span class="string">'DB_PORT'</span>       =&gt; <span class="string">'3306'</span>,</div><div class="line"><span class="string">'DB_PREFIX'</span>     =&gt; <span class="string">''</span>,</div></pre></td></tr></table></figure></p>
+<p>分布式数据库的读写是否分离，默认的情况下读写不分离，也就是每台服务器都可以进行读写操作，<br>对于主从式数据库而言，需要设置读写分离，通过下面的设置就可以：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">'DB_RW_SEPARATE'</span> =&gt; <span class="literal">true</span>, //开启读写分离</div></pre></td></tr></table></figure></p>
 <p>详细可看tp手册 -模型-分布式数据库支持</p>
-<p>==特别注意==:</p>
+<p>特别注意:</p>
 <p>如果你用的是原生SQL，那么需要注意系统的默认规则：写操作必须用模型的execute方法，读操作必须用模型的query方法，否则会发生主从读写错乱的情况。</p>
-<p>==备注==:主从数据库的数据同步工作不在框架实现++，需要数据库考虑自身的同步或者复制机制。</p>
-<h2 id="二-yii框架实现mysql读写分离"><a href="#二-yii框架实现mysql读写分离" class="headerlink" title="二.yii框架实现mysql读写分离"></a>二.yii框架实现mysql读写分离</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">// 配置主服务器</div><div class="line">	 &apos;class&apos; =&gt; &apos;yii\db\Connection&apos;,</div><div class="line">	 &apos;dsn&apos; =&gt; &apos;mysql:host=192.168.2.181;dbname=test&apos;,</div><div class="line">	 &apos;username&apos; =&gt; &apos;itczp&apos;,</div><div class="line">	 &apos;password&apos; =&gt; &apos;itczp&apos;  ,</div><div class="line">	 // 配置从服务器</div><div class="line">	 &apos;slaveConfig&apos; =&gt;</div><div class="line">	 [</div><div class="line">	 	&apos;username&apos; =&gt; &apos;itczp&apos;,</div><div class="line">	 	&apos;password&apos; =&gt; &apos;itczp&apos;,</div><div class="line">	 	&apos;attributes&apos; =&gt;</div><div class="line">	 	[</div><div class="line">	 		// 连接超时时间</div><div class="line">	 		PDO::ATTR_TIMEOUT =&gt; 10,</div><div class="line">	 	],</div><div class="line">	 ],</div><div class="line">	 // 配置从服务器组</div><div class="line">	 &apos;slaves&apos; =&gt;</div><div class="line">	 [</div><div class="line">	              [&apos;dsn&apos; =&gt; &apos;mysql:host=192.168.2.182;dbname=test&apos;],</div><div class="line">	              // [&apos;dsn&apos; =&gt; &apos;mysql:host=192.168.2.183;dbname=test&apos;],</div><div class="line">	              // [&apos;dsn&apos; =&gt; &apos;dsn for slave server 3&apos;],</div><div class="line">	              // [&apos;dsn&apos; =&gt; &apos;dsn for slave server 4&apos;],</div><div class="line">	 ],</div></pre></td></tr></table></figure>
+<p>备注:主从数据库的数据同步工作不在框架实现++，需要数据库考虑自身的同步或者复制机制。</p>
+<h2 id="二-yii框架实现mysql读写分离"><a href="#二-yii框架实现mysql读写分离" class="headerlink" title="二.yii框架实现mysql读写分离"></a>二.yii框架实现mysql读写分离</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">   // 配置主服务器</div><div class="line"><span class="string">'class'</span> =&gt; <span class="string">'yii\db\Connection'</span>,</div><div class="line"><span class="string">'dsn'</span> =&gt; <span class="string">'mysql:host=192.168.2.181;dbname=test'</span>,</div><div class="line"><span class="string">'username'</span> =&gt; <span class="string">'itczp'</span>,</div><div class="line"><span class="string">'password'</span> =&gt; <span class="string">'itczp'</span>  ,</div><div class="line">// 配置从服务器</div><div class="line"><span class="string">'slaveConfig'</span> =&gt;</div><div class="line">[</div><div class="line">	<span class="string">'username'</span> =&gt; <span class="string">'itczp'</span>,</div><div class="line">	<span class="string">'password'</span> =&gt; <span class="string">'itczp'</span>,</div><div class="line">	<span class="string">'attributes'</span> =&gt;</div><div class="line">	[</div><div class="line">		// 连接超时时间</div><div class="line">		PDO::ATTR_TIMEOUT =&gt; 10,</div><div class="line">	],</div><div class="line">],</div><div class="line">// 配置从服务器组</div><div class="line"><span class="string">'slaves'</span> =&gt;</div><div class="line">[</div><div class="line">             [<span class="string">'dsn'</span> =&gt; <span class="string">'mysql:host=192.168.2.182;dbname=test'</span>],</div><div class="line">             // [<span class="string">'dsn'</span> =&gt; <span class="string">'mysql:host=192.168.2.183;dbname=test'</span>],</div><div class="line">             // [<span class="string">'dsn'</span> =&gt; <span class="string">'dsn for slave server 3'</span>],</div><div class="line">             // [<span class="string">'dsn'</span> =&gt; <span class="string">'dsn for slave server 4'</span>],</div><div class="line">],</div></pre></td></tr></table></figure>
 <p>以上的配置实现了一主多从的结构，从服务器用以执行读查询，主服务器执行写入查询，读写分离的功能由后台代码自动完成.调用者无须关心.</p>
 <h2 id="laravel框架实现mysql读写分离"><a href="#laravel框架实现mysql读写分离" class="headerlink" title="laravel框架实现mysql读写分离"></a>laravel框架实现mysql读写分离</h2><p>源码分析:<br><a href="https://laravel-china.org/topics/1879/laravel-5-configuration-read-and-write-separation-and-source-analysis" target="_blank" rel="external">https://laravel-china.org/topics/1879/laravel-5-configuration-read-and-write-separation-and-source-analysis</a></p>
 
@@ -162,7 +142,7 @@
   <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
   <div class="random-toc">
     <h2>Table of Content</h2>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mysql优化之读写分离"><span class="toc-text">mysql优化之读写分离</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#即以前1000个用户的事情，由一个东西来干；读写分离后，1000个用户的事情，由两个东西来干。"><span class="toc-text">即以前1000个用户的事情，由一个东西来干；读写分离后，1000个用户的事情，由两个东西来干。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一-TP框架实现mysql读写分离"><span class="toc-text">一. TP框架实现mysql读写分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-yii框架实现mysql读写分离"><span class="toc-text">二.yii框架实现mysql读写分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#laravel框架实现mysql读写分离"><span class="toc-text">laravel框架实现mysql读写分离</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#读写分离概述："><span class="toc-text">读写分离概述：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要读写分离呢？"><span class="toc-text">为什么要读写分离呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#读写分离，为什么能提升性能呢？"><span class="toc-text">读写分离，为什么能提升性能呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#读写分离的两种实现思路"><span class="toc-text">读写分离的两种实现思路:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一-TP框架实现mysql读写分离"><span class="toc-text">一. TP框架实现mysql读写分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-yii框架实现mysql读写分离"><span class="toc-text">二.yii框架实现mysql读写分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#laravel框架实现mysql读写分离"><span class="toc-text">laravel框架实现mysql读写分离</span></a></li></ol>
   </div>
 </div>
 
