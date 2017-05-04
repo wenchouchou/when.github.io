@@ -79,6 +79,13 @@ free &amp; open source, high-performance, distributed memory object caching syst
             
           </li>
         
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
+            
+          </li>
+        
         </ul>
       </div>
       <div id="show-menu">
@@ -94,14 +101,14 @@ free &amp; open source, high-performance, distributed memory object caching syst
   <article id="post">
     <h1>memcache</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">Created at 2017-05-04</span>
+      <span id = "post-title-date">撰写于 2017-05-04</span>
       
-        <span id = "post-title-updated">Updated at 2017-05-04</span>
+        <span id = "post-title-updated">修改于 2017-05-04</span>
       
       
       
       <span id = "post-title-tags">
-      Tag
+      标签
       
       
         
@@ -301,10 +308,10 @@ free &amp; open source, high-performance, distributed memory object caching syst
 
   </article>
   <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
   <div class="random-toc">
-    <h2>Table of Content</h2>
+    <h2>目录</h2>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章-memcached-介绍"><span class="toc-text">第一章:memcached 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-memcached-是什么"><span class="toc-text">1-1 memcached  是什么?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-memcached-应用图解"><span class="toc-text">1-2 memcached  应用图解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二章-memcached-基本使用"><span class="toc-text">第二章:memcached 基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-memcached-的特性"><span class="toc-text">2-1 memcached 的特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-window-下-memcache-安装"><span class="toc-text">2-2 window 下 memcache 安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-window-下-memcache-启动"><span class="toc-text">2-3 window 下 memcache 启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-window-下-memcache-简单操作"><span class="toc-text">2-4 window 下 memcache 简单操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#yum-install-gcc-make-cmake-autoconf-libtool"><span class="toc-text">yum install gcc make cmake autoconf libtool</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#usr-local-memcached-bin-memcached-p-11211-m-64m-u-root-vv"><span class="toc-text">/usr/local/memcached/bin/memcached -p 11211 -m 64m -u root -vv</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#usr-local-memcached-bin-memcached-p-11211-m-64m-u-root-d"><span class="toc-text">/usr/local/memcached/bin/memcached -p 11211 -m 64m -u root -d</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#usr-local-memcached-bin-memcached-h"><span class="toc-text">/usr/local/memcached/bin/memcached -h</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#date-s-‘yyyy-mm-dd-hh-mm-ss’"><span class="toc-text">date -s ‘yyyy-mm-dd hh:mm:ss’</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#clock-w-把时间写入-cmos"><span class="toc-text">clock -w  # 把时间写入 cmos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#memcached-d-m-1024-u-root-l-127-0-0-1-p-11211-c-1024-P-tmp-memcached-pid"><span class="toc-text">memcached -d -m 1024 -u root -l 127.0.0.1 -p 11211 -c 1024 -P /tmp/memcached.pid</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iptables-F"><span class="toc-text">iptables -F</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iptables-P-INPUT-DROP"><span class="toc-text">iptables -P INPUT DROP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iptables-A-INPUT-p-tcp-s-192-168-0-2-–dport-11211-j-ACCEPT"><span class="toc-text">iptables -A INPUT -p tcp -s 192.168.0.2 –dport 11211 -j ACCEPT</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iptables-A-INPUT-p-udp-s-192-168-0-2-–dport-11211-j-ACCEPT"><span class="toc-text">iptables -A INPUT -p udp -s 192.168.0.2 –dport 11211 -j ACCEPT</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#vim-usr-local-php-lib-php-ini"><span class="toc-text">vim /usr/local/php/lib/php.ini</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-2-memcache-top"><span class="toc-text">6-1-2 memcache-top</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-3-memadmin"><span class="toc-text">6-1-3 memadmin</span></a></li></ol></li></ol>
   </div>
 </div>
@@ -312,7 +319,7 @@ free &amp; open source, high-performance, distributed memory object caching syst
   
 <nav id="pagination">
   
-    <a href="/2017/04/20/rwseparate/" class="prev">&larr; Prev post 框架中读写分离的实现</a>
+    <a href="/2017/04/20/rwseparate/" class="prev">&larr; 上一篇 框架中读写分离的实现</a>
   
 
   
